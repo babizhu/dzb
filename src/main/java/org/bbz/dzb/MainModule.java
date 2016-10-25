@@ -13,6 +13,7 @@ import org.nutz.mvc.annotation.*;
         "*anno", "org.bbz.dzb",
         "*tx",
         "*async"})
+@ChainBy(args="mvc/chain.js")
 @Modules(scanPackage = true)
 @SetupBy(MainSetup.class)
 @Ok("json:full")
