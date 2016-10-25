@@ -30,8 +30,8 @@ public class UserService extends IdNameEntityService<User>{
         if( user == null ) {
             return -1;
         }
-        String _pass = new Sha256Hash( password, user.getSalt() ).toHex();
-        if( _pass.equalsIgnoreCase( user.getPassword() ) ) {
+        String tempPass = new Sha256Hash( password, user.getSalt() ).toHex();
+        if( tempPass.equalsIgnoreCase( user.getPassword() ) ) {
             return user.getId();
         }
         return -1;
