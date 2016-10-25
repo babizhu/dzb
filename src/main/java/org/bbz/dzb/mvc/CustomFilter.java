@@ -14,27 +14,27 @@ import javax.servlet.http.HttpServletRequest;
 import org.nutz.mvc.NutFilter;
 
 public class CustomFilter extends NutFilter {
-	
-	protected Set<String> prefixs = new HashSet<String>();
-	
-	
-	public void init(FilterConfig conf) throws ServletException {
-		super.init(conf);
-		prefixs.add(conf.getServletContext().getContextPath() + "/druid/");
-		prefixs.add(conf.getServletContext().getContextPath() + "/rs/");
-	}
 
-	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-		if (req instanceof HttpServletRequest) {
-			String uri = ((HttpServletRequest) req).getRequestURI();
-			for (String prefix : prefixs) {
-				if (uri.startsWith(prefix)) {
-					chain.doFilter(req, resp);
-					return;
-				}
-			}
-		}
-		super.doFilter(req, resp, chain);
-	}
+    protected Set<String> prefixs = new HashSet<String>();
+
+
+    public void init(FilterConfig conf) throws ServletException {
+        super.init(conf);
+        prefixs.add(conf.getServletContext().getContextPath() + "/druid/");
+        prefixs.add(conf.getServletContext().getContextPath() + "/rs/");
+    }
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+        if (req instanceof HttpServletRequest) {
+            String uri = ((HttpServletRequest) req).getRequestURI();
+            for (String prefix : prefixs) {
+                if (uri.startsWith(prefix)) {
+                    chain.doFilter(req, resp);
+                    return;
+                }
+            }
+        }
+        super.doFilter(req, resp, chain);
+    }
 }
