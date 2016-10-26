@@ -1,7 +1,6 @@
 package org.bbz.dzb.bean;
 
 import org.nutz.dao.entity.annotation.*;
-import sun.plugin.util.UserProfile;
 
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class User extends BasePojo {
     protected List<Role> roles;
     @ManyMany(from="u_id", relation="t_user_permission", target=Permission.class, to="permission_id")
     protected List<Permission> permissions;
-    @One(target=UserProfile.class, field="id", key="userId")
-    protected UserProfile profile;
+//    @One(target=UserProfile.class, field="id", key="userId")
+//    protected UserProfile profile;
 
     public int getId(){
         return id;
@@ -87,11 +86,11 @@ public class User extends BasePojo {
         this.permissions = permissions;
     }
 
-    public UserProfile getProfile(){
-        return profile;
-    }
-
-    public void setProfile( UserProfile profile ){
-        this.profile = profile;
-    }
+//    public UserProfile getProfile(){
+//        return profile;
+//    }
+//
+//    public void setProfile( UserProfile profile ){
+//        this.profile = profile;
+//    }
 }

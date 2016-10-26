@@ -9,13 +9,13 @@ package org.bbz.dzb;
 import org.nutz.integration.shiro.ShiroSessionProvider;
 import org.nutz.mvc.annotation.*;
 
+@SetupBy(MainSetup.class)
 @IocBy(args = {"*js", "ioc/",
         "*anno", "org.bbz.dzb",
         "*tx",
         "*async"})
-@ChainBy(args="mvc/chain.js")
 @Modules(scanPackage = true)
-@SetupBy(MainSetup.class)
+@ChainBy(args="mvc/chain.js")
 @Ok("json:full")
 @Fail("http:500")
 @SessionBy(ShiroSessionProvider.class)

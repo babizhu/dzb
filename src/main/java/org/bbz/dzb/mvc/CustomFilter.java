@@ -1,17 +1,12 @@
 package org.bbz.dzb.mvc;
 
+import org.nutz.mvc.NutFilter;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.nutz.mvc.NutFilter;
 
 public class CustomFilter extends NutFilter {
 
