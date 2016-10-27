@@ -16,6 +16,7 @@ import org.nutz.mvc.annotation.*;
         "*async"})
 @Modules(scanPackage = true)
 @ChainBy(args="mvc/chain.js")
+
 @Ok("json:full")
 @Fail("http:500")
 @SessionBy(ShiroSessionProvider.class)

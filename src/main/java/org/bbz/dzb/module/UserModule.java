@@ -1,6 +1,7 @@
 package org.bbz.dzb.module;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.bbz.dzb.bean.User;
 import org.bbz.dzb.service.UserService;
 import org.nutz.dao.Cnd;
@@ -11,6 +12,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.annotation.*;
+import org.nutz.mvc.filter.CrossOriginFilter;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,8 +23,8 @@ import javax.servlet.http.HttpSession;
 
 @IocBean
 @At("/user")
-@Ok("json")
-@Fail("http:500")
+@Filters({@By(type = CrossOriginFilter.class)})
+
 public class UserModule{
     @Inject
     protected UserService userService;
@@ -30,7 +32,8 @@ public class UserModule{
     protected Dao dao;
 
     @At
-    @Filters // 覆盖UserModule类的@Filter设置,因为登陆可不能要求是个已经登陆的Session
+
+//    @Filters // 覆盖UserModule类的@Filter设置,因为登陆可不能要求是个已经登陆的Session
     @GET
     public Object login( @Param("username") String username,
                          @Param("password") String password,
@@ -52,8 +55,10 @@ public class UserModule{
         }
     }
 
-//    @RequiresUser
+
     @At
+    @GET
+    @RequiresUser
     public Object count(){
         NutMap re = new NutMap();
         final int count = dao.count( User.class );
