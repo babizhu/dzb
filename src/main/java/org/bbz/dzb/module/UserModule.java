@@ -3,6 +3,7 @@ package org.bbz.dzb.module;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.bbz.dzb.bean.User;
+import org.bbz.dzb.consts.ErrorCode;
 import org.bbz.dzb.service.UserService;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
@@ -11,9 +12,13 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.lang.util.NutMap;
-import org.nutz.mvc.annotation.*;
-import org.nutz.mvc.filter.CrossOriginFilter;
+import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Attr;
+import org.nutz.mvc.annotation.GET;
+import org.nutz.mvc.annotation.Param;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -23,9 +28,8 @@ import javax.servlet.http.HttpSession;
 
 @IocBean
 @At("/user")
-@Filters({@By(type = CrossOriginFilter.class)})
 
-public class UserModule{
+public class UserModule extends BaseModule{
     @Inject
     protected UserService userService;
     @Inject
@@ -37,20 +41,24 @@ public class UserModule{
     @GET
     public Object login( @Param("username") String username,
                          @Param("password") String password,
+                         @Param("rememberMe") boolean rememberMe,
                          @Param("captcha") String captcha,
 //                        @Attr(scope = Scope.SESSION, value = "nutz_captcha") String _captcha,
-                         HttpSession session ){
+                         HttpSession session,
+                         HttpServletRequest req,
+                         HttpServletResponse response ){
         NutMap re = new NutMap();
 //        if (!Toolkit.checkCaptcha(_captcha, captcha)) {
 //            return re.setv("ok", false).setv("msg", "验证码错误");
 //        }
         int userId = userService.fetch( username, password );
         if( userId < 0 ) {
-            return re.setv( "ok", false ).setv( "msg", "用户名或密码错误" );
+
+            return buildErrorResponse( response, ErrorCode.LOGIN_ERROR );
         } else {
             session.setAttribute( "me", userId );
             // 完成nutdao_realm后启用.
-            SecurityUtils.getSubject().login( new SimpleShiroToken( userId ) );
+            SecurityUtils.getSubject().login( new SimpleShiroToken( userId, rememberMe, req.getRemoteHost() ) );
             return re.setv( "ok", true );
         }
     }

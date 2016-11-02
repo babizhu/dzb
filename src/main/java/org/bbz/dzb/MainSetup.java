@@ -1,6 +1,8 @@
 package org.bbz.dzb;
 
+import org.bbz.dzb.bean.Enterprise;
 import org.bbz.dzb.bean.User;
+import org.bbz.dzb.service.EnterpriseService;
 import org.bbz.dzb.service.UserService;
 import org.nutz.dao.Dao;
 import org.nutz.dao.util.Daos;
@@ -23,6 +25,12 @@ public class MainSetup implements Setup{
         if (dao.count(User.class) == 0) {
             UserService us = ioc.get(UserService.class);
             us.add("admin", "123456");
+        }
+
+        if (dao.count(Enterprise.class) == 0) {
+            EnterpriseService service = ioc.get(EnterpriseService.class);
+            service.add("金蜜蜂", "一家装修公司","重庆市南岸区茶园玉马路");
+            service.add("唐卡", "大数据解决方案提供商","重庆市渝中区解放西路45#");
         }
     }
 

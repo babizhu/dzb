@@ -6,7 +6,7 @@ package org.bbz.dzb;
 
 //import org.nutz.integration.shiro.ShiroSessionProvider;
 
-import org.nutz.integration.shiro.ShiroSessionProvider;
+import org.bbz.dzb.mvc.CustomShiroSessionProvider;
 import org.nutz.mvc.annotation.*;
 
 @SetupBy(MainSetup.class)
@@ -19,7 +19,9 @@ import org.nutz.mvc.annotation.*;
 
 @Ok("json:full")
 @Fail("http:500")
-@SessionBy(ShiroSessionProvider.class)
+//@Filters({@By(type = CrossOriginFilter.class)})
+@SessionBy(CustomShiroSessionProvider.class)
+
 public class MainModule {
 
 

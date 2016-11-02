@@ -9,7 +9,7 @@ import java.util.List;
  * Role
  */
 @Table("t_role")
-public class Role extends BasePojo {
+public class Role extends BaseBean{
 
     @Id
     protected long id;

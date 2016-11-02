@@ -8,9 +8,9 @@ import java.util.Date;
 
 /**
  * Created by liulaoye on 16-10-25.
- * BasePojo
+ * BaseBean
  */
-public abstract class BasePojo {
+public abstract class BaseBean{
 
     @Column("ct")
     protected Date createTime;

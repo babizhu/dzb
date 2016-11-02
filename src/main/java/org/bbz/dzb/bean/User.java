@@ -9,7 +9,7 @@ import java.util.List;
  * user类
  */
 @Table("t_user")
-public class User extends BasePojo {
+public class User extends BaseBean{
 
     @Id
     protected int id;

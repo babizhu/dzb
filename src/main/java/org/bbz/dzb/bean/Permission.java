@@ -9,7 +9,7 @@ import org.nutz.dao.entity.annotation.*;
 
 
     @Table("t_permission")
-    public class Permission extends BasePojo {
+    public class Permission extends BaseBean{
 
     public long getId(){
         return id;
