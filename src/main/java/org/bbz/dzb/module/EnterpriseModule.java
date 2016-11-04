@@ -1,14 +1,17 @@
 package org.bbz.dzb.module;
 
 import org.apache.shiro.authz.annotation.RequiresUser;
+import org.bbz.dzb.bean.Enterprise;
+import org.bbz.dzb.consts.ErrorCode;
 import org.bbz.dzb.service.EnterpriseService;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.GET;
+import org.nutz.mvc.annotation.Param;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -28,13 +31,45 @@ public class EnterpriseModule extends BaseModule{
     @At
     @GET
     @RequiresUser
-    public Object query(
-                         HttpServletRequest req,
-                         HttpServletResponse response ){
+    public Object query(){
 
         return enterpriseService.getAll();
     }
 
+    /**
+     * 数据操作（增删改）统一到这里处理
+     *
+     * @param op         操作类型1:增 改（通过id是否等于-1区分） 2:删除
+     * @param enterprise 当前要操作的元素
+     */
+    @At
+    @GET
+    @RequiresUser
+    public Object operation( @Param("op") int op, @Param("..") Enterprise enterprise,
+                             HttpServletResponse response ){
+        Object result;
 
+        switch( op ) {
+            case 1:
+                if( enterprise.getId() == -1 ) {
+                    result = enterpriseService.add( enterprise );
+                } else {
+                    enterpriseService.updateIgnoreNull( enterprise );
+                    result = enterprise;
+                }
+                break;
+            case 2:
+                enterpriseService.delete( enterprise );
+                result = new NutMap( "id", enterprise.getId() );
+                break;
+
+            default:
+                result = this.buildErrorResponse( response, ErrorCode.OPERATION_NOT_FOUND, op + "" );
+        }
+        return result;
+
+
+//        return result;
+    }
 
 }

@@ -25,16 +25,20 @@ public class EnterpriseService extends IdNameEntityService<User>{
     public List<Enterprise> getAll(){
 //       QueryResult qr = new QueryResult();
 //        return  qr.setList(dao().query( Enterprise.class, null, null );
-        return dao().query( Enterprise.class,null,null );
+        return dao().query( Enterprise.class, null, null );
     }
 
-    public int delete( int id ){
+    public int delete( Enterprise enterprise ){
 
-        return dao().delete( id );
+        return dao().delete( Enterprise.class, enterprise.getId() );
     }
 
     public void updateIgnoreNull( Enterprise enterprise ){
         dao().updateIgnoreNull( enterprise );
+    }
+
+    public Object add( Enterprise enterprise ){
+        return dao().insert( enterprise );
     }
 
 }

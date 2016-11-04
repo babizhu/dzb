@@ -26,6 +26,27 @@ public class Enterprise extends BaseBean{
     @Column
     @ColDefine(type = ColType.VARCHAR, width = 1000)
     protected String description;
+    @Column
+    protected String mapX;
+    @Column
+    protected String mapY;
+
+    public String getMapX(){
+        return mapX;
+    }
+
+    public void setMapX( String mapX ){
+        this.mapX = mapX;
+    }
+
+    public String getMapY(){
+        return mapY;
+    }
+
+    public void setMapY( String mapY ){
+        this.mapY = mapY;
+    }
+
     public String getMapAddress(){
         return mapAddress;
     }
@@ -41,6 +62,7 @@ public class Enterprise extends BaseBean{
     public void setContact( String contact ){
         this.contact = contact;
     }
+
 
 
 
