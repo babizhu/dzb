@@ -31,6 +31,23 @@ public class Enterprise extends BaseBean{
     @Column
     protected String mapY;
 
+    /**
+     * 所属区域
+     */
+    @Column
+    protected byte areaType;
+
+
+    public byte getAreaType(){
+        return areaType;
+    }
+
+    public void setAreaType( byte areaType ){
+        this.areaType = areaType;
+    }
+
+
+
     public String getMapX(){
         return mapX;
     }

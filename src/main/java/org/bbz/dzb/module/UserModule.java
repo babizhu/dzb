@@ -74,14 +74,60 @@ public class UserModule extends BaseModule{
     }
 
     @At
-    public Object add( @Param("..") User user ){ // 两个点号是按对象属性一一设置
-        NutMap re = new NutMap();
-        String msg = checkUser( user, true );
-        if( msg != null ) {
-            return re.setv( "ok", false ).setv( "msg", msg );
+    @GET
+    @RequiresUser
+    public Object query(){
+
+        return userService.getAll();
+    }
+
+    /**
+     * 数据操作（增删改）统一到这里处理
+     *
+     * @param op         操作类型1:增 改（通过id是否等于-1区分） 2:删除
+     * @param user       当前要操作的元素
+     */
+    @At
+    @GET
+    @RequiresUser
+    public Object operation( @Param("op") int op, @Param("..") User user,
+                             HttpServletResponse response ){
+        Object result;
+
+        switch( op ) {
+            case 1:
+                if( user.getId() == -1 ) {
+                    result = add( user,response );
+                } else {
+                    userService.updateIgnoreNull( user );
+                    result = user;
+                }
+                break;
+            case 2:
+                userService.delete( user.getId() );
+                result = new NutMap( "id", user.getId() );
+                break;
+
+            default:
+                result = this.buildErrorResponse( response, ErrorCode.OPERATION_NOT_FOUND, op + "" );
         }
-        user = userService.add( user.getName(), user.getPassword() );
-        return re.setv( "ok", true ).setv( "data", user );
+
+        return result;
+
+
+//        return result;
+    }
+
+
+
+    private Object add(  User user,HttpServletResponse response ){ // 两个点号是按对象属性一一设置
+
+        ErrorCode errorCode = checkUser( user, true );
+        if( errorCode != ErrorCode.SUCCESS ) {
+            return this.buildErrorResponse( response, errorCode );
+        }
+        user = userService.add( user );
+        return user;
     }
 
 
@@ -93,35 +139,35 @@ public class UserModule extends BaseModule{
         return new NutMap().setv( "ok", true );
     }
 
-    private String checkUser( User user, boolean create ){
+    private ErrorCode checkUser( User user, boolean create ){
         if( user == null ) {
-            return "空对象";
+            return ErrorCode.ILLEGAL_ARGUMENT;
         }
         if( create ) {
             if( Strings.isBlank( user.getName() ) || Strings.isBlank( user.getPassword() ) )
-                return "用户名/密码不能为空";
+                return ErrorCode.ILLEGAL_ARGUMENT;
         } else {
             if( Strings.isBlank( user.getPassword() ) )
-                return "密码不能为空";
+                return ErrorCode.ILLEGAL_ARGUMENT;
         }
         String passwd = user.getPassword().trim();
-        if( 6 > passwd.length() || passwd.length() > 12 ) {
-            return "密码长度错误";
+        if( 6 > passwd.length() || passwd.length() > 20 ) {
+            return ErrorCode.USER_PASSWD_LEN_TOO_SHORT;
         }
         user.setPassword( passwd );
         if( create ) {
             int count = dao.count( User.class, Cnd.where( "name", "=", user.getName() ) );
             if( count != 0 ) {
-                return "用户名已经存在";
+                return ErrorCode.USER_HAS_EXIST;
             }
         } else {
             if( user.getId() < 1 ) {
-                return "用户Id非法";
+                return ErrorCode.ILLEGAL_ARGUMENT;
             }
         }
         if( user.getName() != null )
             user.setName( user.getName().trim() );
-        return null;
+        return ErrorCode.SUCCESS;
     }
 
 }

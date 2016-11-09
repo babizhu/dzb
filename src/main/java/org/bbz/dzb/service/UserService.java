@@ -7,6 +7,7 @@ import org.nutz.lang.random.R;
 import org.nutz.service.IdNameEntityService;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by liulaoye on 16-10-25.
@@ -15,11 +16,24 @@ import java.util.Date;
 @IocBean(fields = "dao")
 public class UserService extends IdNameEntityService<User>{
 
+    public List<User> getAll(){
+        return dao().query( User.class, null, null );
+    }
+
     public User add( String name, String password ){
         User user = new User();
         user.setName( name.trim() );
         user.setSalt( R.UU16() );
         user.setPassword( new Sha256Hash( password, user.getSalt() ).toHex() );
+        user.setCreateTime( new Date() );
+        user.setUpdateTime( new Date() );
+        return dao().insert( user );
+    }
+
+    public User add( User user ){
+
+        user.setSalt( R.UU16() );
+        user.setPassword( new Sha256Hash( user.getPassword(), user.getSalt() ).toHex() );
         user.setCreateTime( new Date() );
         user.setUpdateTime( new Date() );
         return dao().insert( user );
@@ -46,5 +60,8 @@ public class UserService extends IdNameEntityService<User>{
         user.setPassword( new Sha256Hash( password, user.getSalt() ).toHex() );
         user.setUpdateTime( new Date() );
         dao().update( user, "^(password|salt|updateTime)$" );
+    }
+
+    public void updateIgnoreNull( User user ){
     }
 }

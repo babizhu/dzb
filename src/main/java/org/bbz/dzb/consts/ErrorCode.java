@@ -8,8 +8,11 @@ import java.util.Map;
  * 错误代码
  */
 public enum ErrorCode{
-    LOGIN_ERROR( 100 ), NOT_LOGIN( 101 ), OPERATION_NOT_FOUND( 150 );
-
+    SUCCESS( 0 ),
+    ILLEGAL_ARGUMENT( 1 ),
+    LOGIN_ERROR( 100 ), NOT_LOGIN( 101 ), USER_HAS_EXIST(102),
+    USER_PASSWD_LEN_TOO_SHORT( 103 ),//密码长度不够
+    OPERATION_NOT_FOUND( 150 );
     private final int number;
 
     private static final Map<Integer, ErrorCode> numToEnum = new HashMap<>();
