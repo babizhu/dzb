@@ -5,6 +5,7 @@ import org.bbz.dzb.bean.User;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.service.IdNameEntityService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +20,8 @@ public class EnterpriseService extends IdNameEntityService<User>{
         enterprise.setAddress( address );
         enterprise.setDescription( describe );
         enterprise.setName( name );
+        enterprise.setCreateTime( new Date(  ) );
+        enterprise.setUpdateTime( new Date(  ) );
         return dao().insert( enterprise );
     }
 
@@ -34,10 +37,16 @@ public class EnterpriseService extends IdNameEntityService<User>{
     }
 
     public void updateIgnoreNull( Enterprise enterprise ){
+        enterprise.setUpdateTime( new Date(  ) );
+
         dao().updateIgnoreNull( enterprise );
     }
 
     public Object add( Enterprise enterprise ){
+
+        final Date now = new Date();
+        enterprise.setCreateTime( now );
+        enterprise.setUpdateTime( now );
         return dao().insert( enterprise );
     }
 

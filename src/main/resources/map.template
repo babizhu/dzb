@@ -1,0 +1,29 @@
+{
+  "mapwidth": "9704",
+  "mapheight": "3054",
+  "categories": [
+    {
+      "id": "gaokeji",
+      "title": "高科技",
+      "color": "#4cd3b8",
+      "show": "false"
+    },
+    {
+      "id": "dianzi",
+      "title": "电子",
+      "color": "#4cd3b8",
+      "show": "false"
+    }
+  ],
+  "levels": [
+    {
+      "id": "lower",
+      "title": "Lower floor",
+      "map": "images/apartment/lower.jpg",
+      "minimap": "images/apartment/lower-small.jpg",
+      "locations": [
+        ##data##
+      ]
+    }
+  ]
+}

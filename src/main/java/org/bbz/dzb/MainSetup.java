@@ -32,6 +32,30 @@ public class MainSetup implements Setup{
             service.add("金蜜蜂", "一家装修公司","重庆市南岸区茶园玉马路");
             service.add("唐卡", "大数据解决方案提供商","重庆市渝中区解放西路45#");
         }
+
+//        CREATE
+//                ALGORITHM = UNDEFINED
+//        DEFINER = `ces`@`%`
+//        SQL SECURITY DEFINER
+//        VIEW `enterprise_view` AS
+//                (SELECT
+//                        `enterprise`.`id` AS `id`,
+//        `enterprise`.`name` AS `name`,
+//        `enterprise`.`address` AS `address`,
+//        `enterprise`.`mapAddress` AS `mapAddress`,
+//        `enterprise`.`contact` AS `contact`,
+//        `enterprise`.`description` AS `description`,
+//        `enterprise`.`ct` AS `ct`,
+//        `enterprise`.`ut` AS `ut`,
+//        `enterprise`.`mapX` AS `mapX`,
+//        `enterprise`.`mapY` AS `mapY`,
+//        `enterprise`.`areaType` AS `areaType`,
+//        `enterprise`.`linkId` AS `linkId`,
+//        `b`.`yearnum` AS `yearnum`,
+//        `b`.`yearvalue` AS `yearvalue`
+//        FROM
+//                (`enterprise`
+//                        LEFT JOIN `qyyxb` `b` ON ((`enterprise`.`linkId` = `b`.`id`))))
     }
 
     public void destroy( NutConfig nc ){

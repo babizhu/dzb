@@ -1,5 +1,7 @@
 package org.bbz.dzb.module;
 
+import com.bbz.tool.common.FileUtil;
+import com.bbz.tool.common.StrUtil;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.bbz.dzb.bean.Enterprise;
 import org.bbz.dzb.consts.ErrorCode;
@@ -10,9 +12,11 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.GET;
+import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by liulaoye on 16-10-25.
@@ -51,6 +55,7 @@ public class EnterpriseModule extends BaseModule{
 
         switch( op ) {
             case 1:
+
                 if( enterprise.getId() == -1 ) {
                     result = enterpriseService.add( enterprise );
                 } else {
@@ -71,5 +76,44 @@ public class EnterpriseModule extends BaseModule{
 
 //        return result;
     }
+
+    @At
+    @Ok("raw")
+    public String buildMapJson(){
+        String filePath = this.getClass().getClassLoader().getResource( "map.template" ).getPath();
+
+        String result = FileUtil.readTextFile( filePath );
+
+        String enterpriseData = "";
+        final List<Enterprise> all = enterpriseService.getAll();
+        for( Enterprise enterprise : all ) {
+            enterpriseData += buildEnterpriseJson( enterprise );
+        }
+
+
+//        enterpriseData = ;
+        result = result.replace( "##data##", StrUtil.removeLastChar( enterpriseData ) );
+        return result;
+    }
+
+    private String buildEnterpriseJson( Enterprise enterprise ){
+        String result = "";
+        result += "{" +
+                "\"id\": \"" + enterprise.getId() + "\",\n" +
+                "\"title\": \"" + enterprise.getName() + "\",\n" +
+                "\"about\": \"" + enterprise.getName() + "\",\n" +
+                "\"description\": \"" + enterprise.getDescription().replace( "\n","" ) + "\",\n" +
+                "\"category\": \"" + enterprise.getAreaType() + "\",\n" +
+                "\"link\": \"" + enterprise.getMapAddress() + "\",\n" +
+                "\"pin\": \"red\",\n" +
+                "\"x\": \"" + enterprise.getMapX() + "\",\n" +
+                "\"y\": \"" + enterprise.getMapY() + "\",\n" +
+                "\"zoom\": \"4\"\n" +
+                "},";
+        return result;
+    }
+
+
+
 
 }

@@ -7,6 +7,7 @@ import org.nutz.dao.entity.annotation.*;
  * Enterprise
  */
 @Table("enterprise")
+@View("enterprise_view")
 public class Enterprise extends BaseBean{
     @Id
     protected int id;
@@ -30,6 +31,30 @@ public class Enterprise extends BaseBean{
     protected String mapX;
     @Column
     protected String mapY;
+
+    @Column
+    protected long linkId;
+
+    @Column("yearnum")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
+    @Readonly		// <- 这里声明了只读字段，即视图里增加的字段
+    private int yearNum;
+
+    @Column("yearvalue")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
+    @Readonly		// <- 这里声明了只读字段，即视图里增加的字段
+    private double yearValue;
+
+    public long getLinkId(){
+        return linkId;
+    }
+
+    public void setLinkId( long linkId ){
+        this.linkId = linkId;
+    }
+
+
+//    @Column("taskcount")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
+//    @Readonly		// <- 这里声明了只读字段，即视图里增加的字段
+//    private int taskCount;
 
     /**
      * 所属区域
@@ -108,6 +133,7 @@ public class Enterprise extends BaseBean{
     }
 
     public String getDescription(){
+//        enterprise.setDescription( enterprise.getDescription() );//替换相对于json的非法字符
         return description;
     }
 
