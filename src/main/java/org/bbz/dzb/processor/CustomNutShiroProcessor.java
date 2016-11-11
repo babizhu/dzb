@@ -16,7 +16,7 @@ public class CustomNutShiroProcessor extends NutShiroProcessor{
     protected void whenUnauthenticated( ActionContext ac, UnauthenticatedException e ) throws Exception{
 //        super.whenUnauthenticated( ac, e );
         if( NutShiro.isAjax( ac.getRequest() ) ) {
-            ac.getResponse().addHeader( "loginStatus", "accessDenied" );
+//            ac.getResponse().addHeader( "loginStatus", "accessDenied" );
             ac.getResponse().setStatus( 500 );
             NutShiro.rendAjaxResp( ac.getRequest(), ac.getResponse(), new NutMap().addv( "errId", ErrorCode.NOT_LOGIN.toNum() ) );
         } else {
