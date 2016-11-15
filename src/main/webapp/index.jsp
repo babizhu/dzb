@@ -16,6 +16,7 @@
 <body>
 <div id="root" style="height: 100%">
 </div>
-<script src="/bundle.js"></script>
+<script type="text/javascript" language="javascript" src="bundle.js" charset="utf-8"></script>
+
 </body>
 </html>

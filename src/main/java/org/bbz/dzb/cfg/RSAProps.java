@@ -29,8 +29,8 @@ public enum RSAProps{
             e.printStackTrace();
         }
 
-        privateKey = prop.getProperty( "public_key" );
-        publicKey = prop.getProperty( "private_key" );
+        privateKey = prop.getProperty( "private_key" );
+        publicKey = prop.getProperty( "public_key" );
     }
 
     public String getPrivateKey(){

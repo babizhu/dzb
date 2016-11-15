@@ -34,9 +34,7 @@ public class MainSetup implements Setup{
         }
 
 //        CREATE
-//                ALGORITHM = UNDEFINED
-//        DEFINER = `ces`@`%`
-//        SQL SECURITY DEFINER
+//
 //        VIEW `enterprise_view` AS
 //                (SELECT
 //                        `enterprise`.`id` AS `id`,
@@ -56,6 +54,13 @@ public class MainSetup implements Setup{
 //        FROM
 //                (`enterprise`
 //                        LEFT JOIN `qyyxb` `b` ON ((`enterprise`.`linkId` = `b`.`id`))))
+
+
+//        CREATE TABLE `dzb_map`.`qyyxb` (
+//        `id` INT NOT NULL,
+//        `yearnum` INT NULL,
+//        `yearvalue` INT NULL,
+//        PRIMARY KEY (`id`));
     }
 
     public void destroy( NutConfig nc ){
