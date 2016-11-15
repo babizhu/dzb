@@ -1,7 +1,10 @@
 package org.bbz.dzb.misc;
 
 import javax.crypto.Cipher;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -9,6 +12,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * <p>
@@ -25,7 +29,7 @@ import java.util.Map;
  *
  * @author IceWee
  * @version 1.0
- * @date 2012-4-26
+ * date 2012-4-26
  */
 public final class RSAUtils{
 
@@ -329,14 +333,41 @@ public final class RSAUtils{
         return new String[]{RSAUtils.getPublicKey( keyMap ), RSAUtils.getPrivateKey( keyMap )};
     }
 
-    public static void main( String[] args ){
-        try {
 
-            Map<String, Object> keyMap = RSAUtils.genKeyPair();
-            String publicKey = RSAUtils.getPublicKey( keyMap );
-            String privateKey = RSAUtils.getPrivateKey( keyMap );
-            System.err.println( "公钥: \n\r" + publicKey );
-            System.err.println( "私钥： \n\r" + privateKey );
+    public static void main( String[] args ){
+//        String filePath = this.getClass().getClassLoader().getResource( "map.template" ).getPath();
+        try {
+            Properties prop = new Properties();
+            String privateKey = null,publicKey = null;
+            try{
+                        //读取属性文件a.properties
+                        InputStream in = new BufferedInputStream(new FileInputStream("resources/key.properties"));
+                        prop.load(in);     ///加载属性列表
+                publicKey = prop.getProperty( "public_key" );
+                privateKey = prop.getProperty( "private_key" );
+
+//                        Iterator<String> it=prop.stringPropertyNames().iterator();
+//                        while(it.hasNext()){
+//                                String key=it.next();
+//                                System.out.println(key+":"+prop.getProperty(key));
+//                            }
+                        in.close();
+
+                    }
+             catch(Exception e){
+                           System.out.println(e);
+                       }
+
+//            publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCpkUP/2WQ4wb5L6DxTf00dEsWR3zcamXsA7x+cpFYMMwxQpECpKe9ZTnI1hLz7qHakKyI8EwakRCaWCbQfGs+FZ0Q8WwUohEH/A/s8cHLpC/XUh3CGvBSVm8UHKlHSn5yGkPwfU+sdwFLNSpq78UCcYXzApmVAgKTKblf4ryY+swIDAQAB";
+//            privateKey = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAKmRQ//ZZDjBvkvoPFN/TR0SxZHfNxqZewDvH5ykVgwzDFCkQKkp71lOcjWEvPuodqQrIjwTBqREJpYJtB8az4VnRDxbBSiEQf8D+zxwcukL9dSHcIa8FJWbxQcqUdKfnIaQ/B9T6x3AUs1KmrvxQJxhfMCmZUCApMpuV/ivJj6zAgMBAAECgYB/Zr2IhXVfj3HC5oIs2gC+T1RR/TwRqC9azE8cCfz8vX4LON28O92xY9c7jrfO/Qvm3OGj8UeUNAApyrCijipL+0zwgpvL1fTZNw3cWWbvtKaNnaT7PzWfZQ8UEBemcG7ewb5ryInTVsuo2RbEn3fs4hnAjss90aVuStVU8gYQQQJBAPdhcJiZVLXL6bJJKtETNUi0l0QFNevtizr3w4gRi6WsZB+lDpSYCvM67zbiJhDE59HRZnZAcb92pn0BIxHlCWUCQQCvecF9EIpjG7Ut47ZU3XikPHHFwXLQUHk/vnOYCqwrcl0q8G3AwEY/WirU4JFE8kMWT3YX9X5KNas9pF0KtbI3AkBWOJX/+eE2g93uD+ZmfKVjs93NDWvf0Sln4hc6g7MCiXVUOjk8vUmDwRTDMktGKPsLfEqUCJ4ct4QLqavJfuSpAkAVw/N1ENUpf+lUPNeD5UiujnTKQ7l7D1BK0NPDuycp6HCX/+SNMQxFlWiUqRo7xBUAMnECfcfhapDH/5gu2OS3AkBszvk8EkR5lO7LVGbrxhUUGpUulizbo3ede6tC+GI/EXAR8f8B77zGdLq4G/oiUfFu/mZST4gvH3BB+d/lLgIs";
+
+            final byte[] bytes = RSAUtils.encryptByPublicKey( "abcd".getBytes(), publicKey );
+            System.out.println( new String( bytes ));
+
+            final byte[] decode = Base64Utils.decode( "nOzxuxZtOsRGbXbFTqZi0gSYzu85pxbCfpgkxpqsCVhC287tyYPG/hCvctfnGGkJ7e32rLrRZfXBCUfGolUy7biP3UNEclJ98I68J2DIosVlVh8avEmFJxUFKex15nAT2A4OzNyWWbUTTDQda5xCpTGvaT7pnrs8SrBLv7XdfEw=" );
+//            RSAUtils.
+            System.out.println( new String( RSAUtils.decryptByPrivateKey( decode,privateKey ) ));
+
         } catch( Exception e ) {
             e.printStackTrace();
         }

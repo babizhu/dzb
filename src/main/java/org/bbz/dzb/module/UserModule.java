@@ -3,7 +3,10 @@ package org.bbz.dzb.module;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.bbz.dzb.bean.User;
+import org.bbz.dzb.cfg.RSAProps;
 import org.bbz.dzb.consts.ErrorCode;
+import org.bbz.dzb.misc.Base64Utils;
+import org.bbz.dzb.misc.RSAUtils;
 import org.bbz.dzb.service.UserService;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
@@ -12,10 +15,7 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.lang.util.NutMap;
-import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Attr;
-import org.nutz.mvc.annotation.GET;
-import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
  */
 
 @IocBean
-@At("/user")
+@At("/api/user")
 
 public class UserModule extends BaseModule{
     @Inject
@@ -51,7 +51,9 @@ public class UserModule extends BaseModule{
 //        if (!Toolkit.checkCaptcha(_captcha, captcha)) {
 //            return re.setv("ok", false).setv("msg", "验证码错误");
 //        }
-        int userId = userService.fetch( username, password );
+        String p = decodeRsaPassword( password );
+
+        int userId = userService.fetch( username, p );
         if( userId < 0 ) {
 
             return buildErrorResponse( response, ErrorCode.LOGIN_ERROR );
@@ -61,6 +63,16 @@ public class UserModule extends BaseModule{
             SecurityUtils.getSubject().login( new SimpleShiroToken( userId, rememberMe, req.getRemoteHost() ) );
             return re.setv( "ok", true );
         }
+    }
+
+    private String decodeRsaPassword( String password ) {
+        try {
+            final byte[] decode = Base64Utils.decode( password );
+            return new String( RSAUtils.decryptByPrivateKey( decode, RSAProps.INSTANCE.getPrivateKey() ) );
+        } catch( Exception e ) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -76,6 +88,7 @@ public class UserModule extends BaseModule{
     @At
     @GET
     @RequiresUser
+    @Ok("json:{locked:'password|salt',ignoreNull:true}")
     public Object query(){
 
         return userService.getAll();
@@ -84,8 +97,8 @@ public class UserModule extends BaseModule{
     /**
      * 数据操作（增删改）统一到这里处理
      *
-     * @param op         操作类型1:增 改（通过id是否等于-1区分） 2:删除
-     * @param user       当前要操作的元素
+     * @param op   操作类型1:增 改（通过id是否等于-1区分） 2:删除
+     * @param user 当前要操作的元素
      */
     @At
     @GET
@@ -97,7 +110,7 @@ public class UserModule extends BaseModule{
         switch( op ) {
             case 1:
                 if( user.getId() == -1 ) {
-                    result = add( user,response );
+                    result = add( user, response );
                 } else {
                     userService.updateIgnoreNull( user );
                     result = user;
@@ -119,8 +132,7 @@ public class UserModule extends BaseModule{
     }
 
 
-
-    private Object add(  User user,HttpServletResponse response ){ // 两个点号是按对象属性一一设置
+    private Object add( User user, HttpServletResponse response ){ // 两个点号是按对象属性一一设置
 
         ErrorCode errorCode = checkUser( user, true );
         if( errorCode != ErrorCode.SUCCESS ) {

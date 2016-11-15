@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 @IocBean
-@At("/enterprise")
+@At("/api/enterprise")
 
 public class EnterpriseModule extends BaseModule{
     @Inject

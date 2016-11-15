@@ -4,12 +4,13 @@ import java.util.Map;
 
 /**
  * Created by liulaoye on 16-11-11.
+ * 测试非对称加密
  */
 public class RSAUtilsTest{
 
 
-    static String publicKey;
-    static String privateKey;
+    private static String publicKey;
+    private static String privateKey;
 
     static{
         try {
@@ -28,7 +29,7 @@ public class RSAUtilsTest{
         testSign();
     }
 
-    static void test() throws Exception{
+    private static void test() throws Exception{
         System.err.println( "公钥加密——私钥解密" );
         String source = "这是一行没有任何意义的文字，你看完了等于没看，不是吗？";
         System.out.println( "\r加密前文字：\r\n" + source );
@@ -40,7 +41,7 @@ public class RSAUtilsTest{
         System.out.println( "解密后文字: \r\n" + target );
     }
 
-    static void testSign() throws Exception{
+    private static void testSign() throws Exception{
         System.err.println( "私钥加密——公钥解密" );
         String source = "这是一行测试RSA数字签名的无意义文字";
         System.out.println( "原文字：\r\n" + source );

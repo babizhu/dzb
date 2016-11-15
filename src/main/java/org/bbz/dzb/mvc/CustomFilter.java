@@ -21,6 +21,8 @@ public class CustomFilter extends NutFilter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+
+
         if (req instanceof HttpServletRequest) {
             String uri = ((HttpServletRequest) req).getRequestURI();
             for (String prefix : prefixs) {
@@ -28,8 +30,14 @@ public class CustomFilter extends NutFilter {
                     chain.doFilter(req, resp);
                     return;
                 }
+                if( !uri.startsWith( "/api" ) && uri.indexOf( '.' ) == -1 ){//专门处理客户端的请求
+                    req.getRequestDispatcher( "/" ).forward( req,resp );
+                    return;
+                }
             }
         }
+//        resp.setCharacterEncoding( "utf-8" );
+
         super.doFilter(req, resp, chain);
     }
 }
