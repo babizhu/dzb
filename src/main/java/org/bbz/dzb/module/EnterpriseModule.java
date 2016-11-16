@@ -105,18 +105,29 @@ public class EnterpriseModule extends BaseModule{
         result += "{" +
                 "\"id\": \"" + enterprise.getId() + "\",\n" +
                 "\"title\": \"" + enterprise.getName() + "\",\n" +
-                "\"about\": \"" + enterprise.getName() + "\",\n" +
-                "\"description\": \"" + enterprise.getDescription().replace( "\n","" ) + "\",\n" +
+//                "\"about\": \"" + enterprise.getName() + "\",\n" +
+                "\"description\": \"" + buildDesc(enterprise) + "\",\n" +
                 "\"category\": \"" + enterprise.getAreaType() + "\",\n" +
                 "\"link\": \"" + enterprise.getMapAddress() + "\",\n" +
                 "\"pin\": \"red\",\n" +
                 "\"x\": \"" + enterprise.getMapX() + "\",\n" +
                 "\"y\": \"" + enterprise.getMapY() + "\",\n" +
-                "\"zoom\": \"4\"\n" +
+                "\"zoom\": \"3\"\n" +
                 "},";
         return result;
     }
 
+    private String buildDesc(Enterprise enterprise ){
+
+
+        String result = "介绍： " + enterprise.getDescription();
+        result += "产值： " + enterprise.getYearValue();
+        result += "产量： " + enterprise.getYearNum();
+        result += "地址： " + enterprise.getAddress();
+        result += "联系人： " + enterprise.getContact();
+
+        return result;
+    }
 
 
 

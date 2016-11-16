@@ -140,4 +140,12 @@ public class Enterprise extends BaseBean{
     public void setDescription( String description ){
         this.description = description;
     }
+
+    public double getYearValue() {
+        return yearValue;
+    }
+
+    public int getYearNum() {
+        return yearNum;
+    }
 }
