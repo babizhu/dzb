@@ -3,14 +3,20 @@
   "mapheight": "3054",
   "categories": [
     {
-      "id": "gaokeji",
-      "title": "高科技",
+      "id": "0",
+      "title": "##areaType0##",
+      "color": "#4cd3b8",
+      "show": "true"
+    },
+    {
+      "id": "1",
+      "title": "##areaType1##",
       "color": "#4cd3b8",
       "show": "false"
     },
     {
-      "id": "dianzi",
-      "title": "电子",
+      "id": "2",
+      "title": "##areaType2##",
       "color": "#4cd3b8",
       "show": "false"
     }

@@ -15,11 +15,12 @@ import java.util.List;
 @IocBean(fields = "dao")
 public class EnterpriseService extends IdNameEntityService<User>{
 
-    public Enterprise add( String name, String describe, String address ){
+    public Enterprise add( String name, String describe, String address,int areaType ){
         Enterprise enterprise = new Enterprise();
         enterprise.setAddress( address );
         enterprise.setDescription( describe );
         enterprise.setName( name );
+        enterprise.setAreaType( (byte) areaType );
         enterprise.setCreateTime( new Date(  ) );
         enterprise.setUpdateTime( new Date(  ) );
         return dao().insert( enterprise );

@@ -79,7 +79,7 @@ public class EnterpriseModule extends BaseModule{
 
     @At
     @Ok("raw")
-    public String buildMapJson(){
+    public String buildMapJson(HttpServletResponse response){
         String filePath = this.getClass().getClassLoader().getResource( "map.template" ).getPath();
 
         String result = FileUtil.readTextFile( filePath );
@@ -92,7 +92,11 @@ public class EnterpriseModule extends BaseModule{
 
 
 //        enterpriseData = ;
+        result = result.replace( "##areaType0##", "茶园片区" );
+        result = result.replace( "##areaType1##", "经开区片区" );
+        result = result.replace( "##areaType2##", "南坪片区" );
         result = result.replace( "##data##", StrUtil.removeLastChar( enterpriseData ) );
+        response.setContentType("text/html;charset=UTF-8");
         return result;
     }
 
