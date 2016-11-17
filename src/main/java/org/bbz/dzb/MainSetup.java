@@ -175,7 +175,25 @@ public class MainSetup implements Setup{
 
 
         }
-
+//        SELECT
+//        `enterprise`.`id` AS `id`,
+//        `enterprise`.`name` AS `name`,
+//        `enterprise`.`address` AS `address`,
+//        `enterprise`.`mapAddress` AS `mapAddress`,
+//        `enterprise`.`contact` AS `contact`,
+//        `enterprise`.`description` AS `description`,
+//        `enterprise`.`ct` AS `ct`,
+//        `enterprise`.`ut` AS `ut`,
+//        `enterprise`.`mapX` AS `mapX`,
+//        `enterprise`.`mapY` AS `mapY`,
+//        `enterprise`.`areaType` AS `areaType`,
+//        `enterprise`.`linkName` AS `linkName`,
+//
+//        (select yearnum from qyyxb where id=(select max(id) from qyyxb as q where enterprise.linkName=q.fullname)) as  `yearnum`,
+//        (select yearvalue as v from qyyxb where id=(select max(id) from qyyxb as q where enterprise.linkName=q.fullname)) as yearvalue
+//        FROM
+//        `enterprise`
+//////////////////////////////////////////////////////////////////////////////////////
 //        CREATE
 //
 //        VIEW `enterprise_view` AS

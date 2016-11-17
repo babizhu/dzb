@@ -110,6 +110,7 @@ public class EnterpriseModule extends BaseModule{
                 "\"category\": \"" + enterprise.getAreaType() + "\",\n" +
                 "\"link\": \"" + enterprise.getMapAddress() + "\",\n" +
                 "\"pin\": \"red\",\n" +
+                "\"action\": \"lightbox\",\n" +
                 "\"x\": \"" + enterprise.getMapX() + "\",\n" +
                 "\"y\": \"" + enterprise.getMapY() + "\",\n" +
                 "\"zoom\": \"3\"\n" +
@@ -120,11 +121,11 @@ public class EnterpriseModule extends BaseModule{
     private String buildDesc(Enterprise enterprise ){
 
 
-        String result = "介绍： " + enterprise.getDescription();
-        result += "产值： " + enterprise.getYearValue();
-        result += "产量： " + enterprise.getYearNum();
-        result += "地址： " + enterprise.getAddress();
-        result += "联系人： " + enterprise.getContact();
+        String result = enterprise.getDescription();
+        result += "<br/><br/>产值： " + enterprise.getYearValue() + " 万元";
+        result += "<br/><br/>产量： " + enterprise.getYearNum() + "(台/套)";
+        result += "<br/><br/>地址： " + enterprise.getAddress();
+        result += "<br/><br/>联系： " + enterprise.getContact();
 
         return result;
     }

@@ -32,8 +32,20 @@ public class Enterprise extends BaseBean{
     @Column
     protected String mapY;
 
+//    @Column
+//    protected long linkId;
+
+    public String getLinkName(){
+        return linkName;
+    }
+
+    public void setLinkName( String linkName ){
+        this.linkName = linkName;
+    }
+
     @Column
-    protected long linkId;
+    @ColDefine(type = ColType.VARCHAR, width = 150)
+    protected String linkName;
 
     @Column("yearnum")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
     @Readonly		// <- 这里声明了只读字段，即视图里增加的字段
@@ -43,13 +55,13 @@ public class Enterprise extends BaseBean{
     @Readonly		// <- 这里声明了只读字段，即视图里增加的字段
     private double yearValue;
 
-    public long getLinkId(){
-        return linkId;
-    }
-
-    public void setLinkId( long linkId ){
-        this.linkId = linkId;
-    }
+//    public long getLinkId(){
+//        return linkId;
+//    }
+//
+//    public void setLinkId( long linkId ){
+//        this.linkId = linkId;
+//    }
 
 
 //    @Column("taskcount")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
