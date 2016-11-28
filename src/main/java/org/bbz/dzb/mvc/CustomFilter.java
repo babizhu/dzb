@@ -30,7 +30,7 @@ public class CustomFilter extends NutFilter {
                     chain.doFilter(req, resp);
                     return;
                 }
-                if( !uri.startsWith( "/api" ) && uri.indexOf( '.' ) == -1 ){//专门处理客户端的请求
+                if( !uri.startsWith( "/api" ) && uri.indexOf( '.' ) == -1 ){//专门处理客户端(react js  )的请求
                     req.getRequestDispatcher( "/" ).forward( req,resp );
                     return;
                 }

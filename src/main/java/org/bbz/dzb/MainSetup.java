@@ -194,28 +194,7 @@ public class MainSetup implements Setup{
 //        FROM
 //        `enterprise`
 //////////////////////////////////////////////////////////////////////////////////////
-//        CREATE
 //
-//        VIEW `enterprise_view` AS
-//                (SELECT
-//                        `enterprise`.`id` AS `id`,
-//        `enterprise`.`name` AS `name`,
-//        `enterprise`.`address` AS `address`,
-//        `enterprise`.`mapAddress` AS `mapAddress`,
-//        `enterprise`.`contact` AS `contact`,
-//        `enterprise`.`description` AS `description`,
-//        `enterprise`.`ct` AS `ct`,
-//        `enterprise`.`ut` AS `ut`,
-//        `enterprise`.`mapX` AS `mapX`,
-//        `enterprise`.`mapY` AS `mapY`,
-//        `enterprise`.`areaType` AS `areaType`,
-//        `enterprise`.`linkId` AS `linkId`,
-//        `b`.`yearnum` AS `yearnum`,
-//        `b`.`yearvalue` AS `yearvalue`
-//        FROM
-//                (`enterprise`
-//                        LEFT JOIN `qyyxb` `b` ON ((`enterprise`.`linkId` = `b`.`id`))))
-
 
 //        CREATE TABLE `dzb_map`.`qyyxb` (
 //        `id` INT NOT NULL,

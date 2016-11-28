@@ -31,7 +31,9 @@ public class Enterprise extends BaseBean{
     protected String mapX;
     @Column
     protected String mapY;
-
+    @Column
+    @ColDefine(type = ColType.VARCHAR, width = 150)
+    protected String linkName;
 //    @Column
 //    protected long linkId;
 
@@ -43,9 +45,7 @@ public class Enterprise extends BaseBean{
         this.linkName = linkName;
     }
 
-    @Column
-    @ColDefine(type = ColType.VARCHAR, width = 150)
-    protected String linkName;
+
 
     @Column("yearnum")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
     @Readonly		// <- 这里声明了只读字段，即视图里增加的字段

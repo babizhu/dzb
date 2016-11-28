@@ -51,6 +51,10 @@ public class UserModule extends BaseModule{
 //        if (!Toolkit.checkCaptcha(_captcha, captcha)) {
 //            return re.setv("ok", false).setv("msg", "验证码错误");
 //        }
+
+        if( Strings.isBlank( username ) || Strings.isBlank( password )){
+            return buildErrorResponse( response, ErrorCode.LOGIN_ERROR );
+        }
         String p = decodeRsaPassword( password );
 
         int userId = userService.fetch( username, p );

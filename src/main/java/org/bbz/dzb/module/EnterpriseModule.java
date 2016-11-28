@@ -2,6 +2,7 @@ package org.bbz.dzb.module;
 
 import com.bbz.tool.common.FileUtil;
 import com.bbz.tool.common.StrUtil;
+import com.google.common.base.Strings;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.bbz.dzb.bean.Enterprise;
 import org.bbz.dzb.consts.ErrorCode;
@@ -40,7 +41,10 @@ public class EnterpriseModule extends BaseModule{
         return enterpriseService.getAll();
     }
 
-    /**
+    /**0.5765
+     * http://j.map.baidu.com/fdLxH
+     * 0.1996
+     * 0.2229
      * 数据操作（增删改）统一到这里处理
      *
      * @param op         操作类型1:增 改（通过id是否等于-1区分） 2:删除
@@ -110,7 +114,8 @@ public class EnterpriseModule extends BaseModule{
                 "\"category\": \"" + enterprise.getAreaType() + "\",\n" +
                 "\"link\": \"" + enterprise.getMapAddress() + "\",\n" +
                 "\"pin\": \"red\",\n" +
-                "\"action\": \"lightbox\",\n" +
+//                "\"action\": \"lightbox\",\n" +//全屏
+                "\"action\": \"tooltip\",\n" +
                 "\"x\": \"" + enterprise.getMapX() + "\",\n" +
                 "\"y\": \"" + enterprise.getMapY() + "\",\n" +
                 "\"zoom\": \"3\"\n" +
@@ -122,10 +127,10 @@ public class EnterpriseModule extends BaseModule{
 
 
         String result = enterprise.getDescription();
-        result += "<br/><br/>产值： " + enterprise.getYearValue() + " 万元";
-        result += "<br/><br/>产量： " + enterprise.getYearNum() + "(台/套)";
-        result += "<br/><br/>地址： " + enterprise.getAddress();
-        result += "<br/><br/>联系： " + enterprise.getContact();
+        result += enterprise.getYearValue()<0.0001?"":"<br/>当年截止目前产值： " + enterprise.getYearValue() + " 万元";
+        result += enterprise.getYearNum()==0?"":"<br/>当年截止目前产量： " + enterprise.getYearNum() + " (台/套)";
+        result += Strings.isNullOrEmpty(enterprise.getAddress())?"":"<br/>地址： " + enterprise.getAddress();
+        result += Strings.isNullOrEmpty(enterprise.getContact())?"":"<br/>联系： " + enterprise.getContact();
 
         return result;
     }
