@@ -1,6 +1,7 @@
 package org.bbz.dzb.processor;
 
 import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.bbz.dzb.consts.ErrorCode;
 import org.nutz.integration.shiro.NutShiro;
 import org.nutz.integration.shiro.NutShiroProcessor;
@@ -10,6 +11,7 @@ import org.nutz.mvc.view.ServerRedirectView;
 
 /**
  * Created by liulaoye on 16-11-2.
+ *
  */
 public class CustomNutShiroProcessor extends NutShiroProcessor{
     @Override
@@ -24,5 +26,12 @@ public class CustomNutShiroProcessor extends NutShiroProcessor{
         }
     }
 
-
+    protected void whenUnauthorized(ActionContext ac, UnauthorizedException e) throws Exception {
+        if (NutShiro.isAjax(ac.getRequest())) {
+            ac.getResponse().setStatus( 500 );
+            NutShiro.rendAjaxResp( ac.getRequest(), ac.getResponse(), new NutMap().addv( "errId", ErrorCode.PERMISSION_DENIED.toNum() ) );
+        } else {
+            new ServerRedirectView(noAuthUri()).render(ac.getRequest(), ac.getResponse(), null);
+        }
+    }
 }

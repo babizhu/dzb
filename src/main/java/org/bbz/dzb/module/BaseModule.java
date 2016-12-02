@@ -13,19 +13,20 @@ public class BaseModule{
 
     /**
      * 根据错误id，构建相应的错误提示信息
+     *
      * @param response
      * @param errId
-     *
      * @return
      */
-    protected NutMap  buildErrorResponse( HttpServletResponse response, ErrorCode errId){
+    protected NutMap buildErrorResponse( HttpServletResponse response, ErrorCode errId ){
 
-        return this.buildErrorResponse( response,errId,"" );
+        return this.buildErrorResponse( response, errId, "" );
     }
-    protected NutMap  buildErrorResponse( HttpServletResponse response, ErrorCode errId, String args){
+
+    protected NutMap buildErrorResponse( HttpServletResponse response, ErrorCode errId, String args ){
         response.setStatus( 500 );
         NutMap re = new NutMap();
-        re.addv("errId", errId.toNum()).addv( "args",args );
+        re.addv( "errId", errId.toNum() ).addv( "args", args );
 //        return "{\"errId\":" + errId.toNum() + ",\"args\":\"" + args + "\"}";
         return re;
     }

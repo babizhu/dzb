@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by liulaoye on 16-10-28.
+ *
  */
 public class CustomShiroSessionProvider implements SessionProvider{
 
@@ -20,11 +21,9 @@ public class CustomShiroSessionProvider implements SessionProvider{
 //            resp.addHeader("Access-Control-Allow-Credentials", "true");
 //            resp.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Key");
 //        }
-        resp.addHeader("Access-Control-Allow-Origin", req.getHeader( "Origin" ));
-        resp.addHeader("Access-Control-Allow-Credentials", "true");
-        resp.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Key");
+
         final Subject subject = SecurityUtils.getSubject();
-        if (!subject.isAuthenticated() && subject.isRemembered()) {
+        if (  !subject.isAuthenticated() && subject.isRemembered() ) {//自动登录
             Object principal = subject.getPrincipal();
             if (null != principal) {
                 String  userName = String.valueOf(principal);
@@ -34,9 +33,15 @@ public class CustomShiroSessionProvider implements SessionProvider{
 //                subject.login(token);//登录
             }
         }
-        if (req instanceof ShiroHttpServletRequest )
+        resp.addHeader("Access-Control-Allow-Origin", req.getHeader( "Origin" ));
+        resp.addHeader("Access-Control-Allow-Credentials", "true");
+        resp.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Key");
+
+        if (req instanceof ShiroHttpServletRequest ){
             return req;
-        return new ShiroHttpServletRequest(req, servletContext, true);
+        }
+        final ShiroHttpServletRequest shiroHttpServletRequest = new ShiroHttpServletRequest( req, servletContext, true );
+        return shiroHttpServletRequest;
     }
 
     public void notifyStop() {

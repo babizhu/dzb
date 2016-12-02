@@ -12,6 +12,7 @@ public enum ErrorCode{
     ILLEGAL_ARGUMENT( 1 ),
     LOGIN_ERROR( 100 ), NOT_LOGIN( 101 ), USER_HAS_EXIST(102),
     USER_PASSWD_LEN_TOO_SHORT( 103 ),//密码长度不够
+    PERMISSION_DENIED(104),
     OPERATION_NOT_FOUND( 150 );
     private final int number;
 

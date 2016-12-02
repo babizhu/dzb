@@ -1,6 +1,7 @@
 package org.bbz.dzb.module;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.bbz.dzb.bean.User;
 import org.bbz.dzb.cfg.RSAProps;
@@ -35,9 +36,10 @@ public class UserModule extends BaseModule{
     @Inject
     protected Dao dao;
 
-    @At
+
 
 //    @Filters // 覆盖UserModule类的@Filter设置,因为登陆可不能要求是个已经登陆的Session
+    @At
     @GET
     public Object login( @Param("username") String username,
                          @Param("password") String password,
@@ -52,7 +54,7 @@ public class UserModule extends BaseModule{
 //            return re.setv("ok", false).setv("msg", "验证码错误");
 //        }
 
-        if( Strings.isBlank( username ) || Strings.isBlank( password )){
+        if( Strings.isBlank( username ) || Strings.isBlank( password ) ) {
             return buildErrorResponse( response, ErrorCode.LOGIN_ERROR );
         }
         String p = decodeRsaPassword( password );
@@ -64,12 +66,16 @@ public class UserModule extends BaseModule{
         } else {
             session.setAttribute( "me", userId );
             // 完成nutdao_realm后启用.
-            SecurityUtils.getSubject().login( new SimpleShiroToken( userId, rememberMe, req.getRemoteHost() ) );
-            return re.setv( "ok", true );
+            final SimpleShiroToken token = new SimpleShiroToken( userId );
+            token.setRememberMe( rememberMe );
+            SecurityUtils.getSubject().login( token );
+
+//            SecurityUtils.getSubject().getSession().setTimeout(10000);//设置ｓｅｓｓｉｏｎ超时时间
+            return re.setv( "ok", true ).setv( "name", username );
         }
     }
 
-    private String decodeRsaPassword( String password ) {
+    private String decodeRsaPassword( String password ){
         try {
             final byte[] decode = Base64Utils.decode( password );
             return new String( RSAUtils.decryptByPrivateKey( decode, RSAProps.INSTANCE.getPrivateKey() ) );
@@ -82,7 +88,7 @@ public class UserModule extends BaseModule{
 
     @At
     @GET
-    @RequiresUser
+    @RequiresRoles("admin")
     public Object count(){
         NutMap re = new NutMap();
         final int count = dao.count( User.class );
