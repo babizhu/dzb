@@ -91,7 +91,7 @@ public class EnterpriseModule extends BaseModule{
         String enterpriseData = "";
         final List<Enterprise> all = enterpriseService.getAll();
         for( Enterprise enterprise : all ) {
-            enterpriseData += buildEnterpriseJson( enterprise );
+            enterpriseData += buildEnterpriseJson( enterprise,true );
         }
 
 
@@ -103,10 +103,29 @@ public class EnterpriseModule extends BaseModule{
         response.setContentType("text/html;charset=UTF-8");
         return result;
     }
+    @At
+    @Ok("raw")
+    public String buildMapJson2(HttpServletResponse response){
+        String filePath = this.getClass().getClassLoader().getResource( "map2.template" ).getPath();
 
-    private String buildEnterpriseJson( Enterprise enterprise ){
+        String result = FileUtil.readTextFile( filePath );
+
+        String enterpriseData = "";
+        final List<Enterprise> all = enterpriseService.getAll();
+        for( Enterprise enterprise : all ) {
+            enterpriseData += buildEnterpriseJson( enterprise,false );
+        }
+
+
+        result = result.replace( "##data##", StrUtil.removeLastChar( enterpriseData ) );
+        response.setContentType("text/html;charset=UTF-8");
+        return result;
+    }
+
+    private String buildEnterpriseJson( Enterprise enterprise, boolean actionIsTooltip ){
         String result = "";
-        result += "{" +
+        String action = actionIsTooltip? "\"action\": \"tooltip\",\n": "\"action\": \"lightbox\",\n";
+                result += "{" +
                 "\"id\": \"" + enterprise.getId() + "\",\n" +
                 "\"title\": \"" + enterprise.getName() + "\",\n" +
 //                "\"about\": \"" + enterprise.getName() + "\",\n" +
@@ -114,8 +133,7 @@ public class EnterpriseModule extends BaseModule{
                 "\"category\": \"" + enterprise.getAreaType() + "\",\n" +
                 "\"link\": \"" + enterprise.getMapAddress() + "\",\n" +
                 "\"pin\": \"red\",\n" +
-//                "\"action\": \"lightbox\",\n" +//全屏
-                "\"action\": \"tooltip\",\n" +
+                action +
                 "\"x\": \"" + enterprise.getMapX() + "\",\n" +
                 "\"y\": \"" + enterprise.getMapY() + "\",\n" +
                 "\"zoom\": \"3\"\n" +
@@ -127,8 +145,8 @@ public class EnterpriseModule extends BaseModule{
 
 
         String result = enterprise.getDescription();
-        result += enterprise.getYearValue()<0.0001?"":"<br/>当年截止目前产值： " + enterprise.getYearValue() + " 万元";
-        result += enterprise.getYearNum()==0?"":"<br/>当年截止目前产量： " + enterprise.getYearNum() + " (台/套)";
+        result += enterprise.getYearValue()<0.0001?"":"<br/>当年累计产值： " + enterprise.getYearValue() + " 万元";
+        result += enterprise.getYearNum()==0?"":"<br/>当年累计产量： " + enterprise.getYearNum() + " (台/套)";
         result += Strings.isNullOrEmpty(enterprise.getAddress())?"":"<br/>地址： " + enterprise.getAddress();
         result += Strings.isNullOrEmpty(enterprise.getContact())?"":"<br/>联系： " + enterprise.getContact();
 

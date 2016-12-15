@@ -1,0 +1,16 @@
+{
+  "mapwidth": "9704",
+  "mapheight": "3054",
+
+  "levels": [
+    {
+      "id": "lower",
+      "title": "Lower floor",
+      "map": "images/apartment/lower.jpg",
+      "minimap": "images/apartment/lower-small.jpg",
+      "locations": [
+        ##data##
+      ]
+    }
+  ]
+}

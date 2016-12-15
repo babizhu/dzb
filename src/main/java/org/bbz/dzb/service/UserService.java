@@ -2,6 +2,7 @@ package org.bbz.dzb.service;
 
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.bbz.dzb.bean.User;
+import org.bbz.dzb.consts.ErrorCode;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.random.R;
 import org.nutz.service.IdNameEntityService;
@@ -39,8 +40,8 @@ public class UserService extends IdNameEntityService<User>{
         return dao().insert( user );
     }
 
-    public int fetch( String username, String password ){
-        User user = fetch( username );
+    public int fetch( String userName, String password ){
+        User user = fetch( userName );
         if( user == null ) {
             return -1;
         }
@@ -51,17 +52,46 @@ public class UserService extends IdNameEntityService<User>{
         return -1;
     }
 
-    public void updatePassword( int userId, String password ){
-        User user = fetch( userId );
+    /**
+     * 管理员重置密码
+     * @param userName
+     * @param newPassword
+     * @return
+     */
+    public ErrorCode resetPassword(String  userName ,String newPassword ){
+        User user = fetch( userName );
         if( user == null ) {
-            return;
+            return ErrorCode.NOT_LOGIN;
         }
+
+
         user.setSalt( R.UU16() );
-        user.setPassword( new Sha256Hash( password, user.getSalt() ).toHex() );
+        user.setPassword( new Sha256Hash( newPassword, user.getSalt() ).toHex() );
         user.setUpdateTime( new Date() );
         dao().update( user, "^(password|salt|updateTime)$" );
+//        .query("^(id|title|info|picurl)$", cnd.desc("publishAt"))
+        return ErrorCode.SUCCESS;
+    }
+
+    public ErrorCode changePassword( String  userName, String currentPassword,String newPassword ){
+        User user = fetch( userName );
+        if( user == null ) {
+            return ErrorCode.NOT_LOGIN;
+        }
+
+        String tempPass = new Sha256Hash( currentPassword, user.getSalt() ).toHex();
+        if( !tempPass.equalsIgnoreCase( user.getPassword() ) ) {
+            return ErrorCode.PASSWORD_ERROR;
+        }
+        user.setSalt( R.UU16() );
+        user.setPassword( new Sha256Hash( newPassword, user.getSalt() ).toHex() );
+        user.setUpdateTime( new Date() );
+        dao().update( user, "^(password|salt|updateTime)$" );
+//        .query("^(id|title|info|picurl)$", cnd.desc("publishAt"))
+        return ErrorCode.SUCCESS;
     }
 
     public void updateIgnoreNull( User user ){
     }
+
 }

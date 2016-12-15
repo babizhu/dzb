@@ -13,6 +13,7 @@ public enum ErrorCode{
     LOGIN_ERROR( 100 ), NOT_LOGIN( 101 ), USER_HAS_EXIST(102),
     USER_PASSWD_LEN_TOO_SHORT( 103 ),//密码长度不够
     PERMISSION_DENIED(104),
+    PASSWORD_ERROR( 105 ),//修改密码的时候，输入的原始密码不正确
     OPERATION_NOT_FOUND( 150 );
     private final int number;
 

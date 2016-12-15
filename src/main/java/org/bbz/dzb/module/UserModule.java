@@ -1,6 +1,7 @@
 package org.bbz.dzb.module;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.bbz.dzb.bean.User;
@@ -37,8 +38,7 @@ public class UserModule extends BaseModule{
     protected Dao dao;
 
 
-
-//    @Filters // 覆盖UserModule类的@Filter设置,因为登陆可不能要求是个已经登陆的Session
+    //    @Filters // 覆盖UserModule类的@Filter设置,因为登陆可不能要求是个已经登陆的Session
     @At
     @GET
     public Object login( @Param("username") String username,
@@ -65,6 +65,7 @@ public class UserModule extends BaseModule{
             return buildErrorResponse( response, ErrorCode.LOGIN_ERROR );
         } else {
             session.setAttribute( "me", userId );
+            session.setAttribute( "username", username );
             // 完成nutdao_realm后启用.
             final SimpleShiroToken token = new SimpleShiroToken( userId );
             token.setRememberMe( rememberMe );
@@ -88,6 +89,21 @@ public class UserModule extends BaseModule{
 
     @At
     @GET
+    @RequiresAuthentication
+    public Object resetPassword(  @Param("userName") String userName,
+                                  @Param("newPassword") String newPassword,
+
+                                  HttpServletResponse response ){
+
+//        String p = decodeRsaPassword( currentPassword );
+        userService.resetPassword( userName , newPassword );
+        NutMap re = new NutMap();
+        return re.setv( "ok", true );
+    }
+
+
+    @At
+    @GET
     @RequiresRoles("admin")
     public Object count(){
         NutMap re = new NutMap();
@@ -97,7 +113,7 @@ public class UserModule extends BaseModule{
 
     @At
     @GET
-    @RequiresUser
+    @RequiresAuthentication
     @Ok("json:{locked:'password|salt',ignoreNull:true}")
     public Object query(){
 
@@ -136,9 +152,6 @@ public class UserModule extends BaseModule{
         }
 
         return result;
-
-
-//        return result;
     }
 
 
@@ -153,13 +166,13 @@ public class UserModule extends BaseModule{
     }
 
 
-    @At
-    public Object update( @Param("password") String password, @Attr("me") int me ){
-        if( Strings.isBlank( password ) || password.length() < 6 )
-            return new NutMap().setv( "ok", false ).setv( "msg", "密码不符合要求" );
-        userService.updatePassword( me, password );
-        return new NutMap().setv( "ok", true );
-    }
+//    @At
+//    public Object update( @Param("password") String password, @Attr("me") int me ){
+//        if( Strings.isBlank( password ) || password.length() < 6 )
+//            return new NutMap().setv( "ok", false ).setv( "msg", "密码不符合要求" );
+//        userService.updatePassword( me, password );
+//        return new NutMap().setv( "ok", true );
+//    }
 
     private ErrorCode checkUser( User user, boolean create ){
         if( user == null ) {
