@@ -1,26 +1,7 @@
-{
+   {
   "mapwidth": "9704",
   "mapheight": "3054",
-  "categories": [
-    {
-      "id": "0",
-      "title": "##areaType0##",
-      "color": "#4cd3b8",
-      "show": "false"
-    },
-    {
-      "id": "1",
-      "title": "##areaType1##",
-      "color": "#4cd3b8",
-      "show": "false"
-    },
-    {
-      "id": "2",
-      "title": "##areaType2##",
-      "color": "#4cd3b8",
-      "show": "false"
-    }
-  ],
+
   "levels": [
     {
       "id": "lower",
