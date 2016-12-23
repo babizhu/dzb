@@ -2,6 +2,7 @@ package org.bbz.dzb.service;
 
 import org.bbz.dzb.bean.Enterprise;
 import org.bbz.dzb.bean.User;
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.service.IdNameEntityService;
 
@@ -29,7 +30,7 @@ public class EnterpriseService extends IdNameEntityService<User>{
     public List<Enterprise> getAll(){
 //       QueryResult qr = new QueryResult();
 //        return  qr.setList(dao().query( Enterprise.class, null, null );
-        return dao().query( Enterprise.class, null, null );
+        return dao().query( Enterprise.class, Cnd.orderBy().desc( "orderId" ), null );
     }
 
     public int delete( Enterprise enterprise ){

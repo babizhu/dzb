@@ -15,6 +15,13 @@ public class Enterprise extends BaseBean{
     @Column
     @ColDefine(type = ColType.VARCHAR, width = 100)
     protected String name;
+
+    /**
+     * 排序ｉｄ
+     */
+    @Column
+    @Default("0")
+    protected int orderId;
     @Column
     @ColDefine(type = ColType.VARCHAR, width = 150)
     protected String address;
@@ -45,7 +52,13 @@ public class Enterprise extends BaseBean{
         this.linkName = linkName;
     }
 
+    public int getOrderId(){
+        return orderId;
+    }
 
+    public void setOrderId( int orderId ){
+        this.orderId = orderId;
+    }
 
     @Column("yearnum")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
     @Readonly		// <- 这里声明了只读字段，即视图里增加的字段

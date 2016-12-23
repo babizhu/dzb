@@ -26,6 +26,7 @@ public class MainSetup implements Setup{
             UserService us = ioc.get(UserService.class);
             us.add("admin", "123456");
         }
+        Daos.migration(dao, Enterprise.class, true, false, false); // 新增字段true,删除字段false,检查索引false
 
         if (dao.count(Enterprise.class) == 0) {
             EnterpriseService service = ioc.get(EnterpriseService.class);
