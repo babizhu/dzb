@@ -28,6 +28,20 @@ public class Enterprise extends BaseBean{
     @Column
     @ColDefine(type = ColType.VARCHAR, width = 250)
     protected String mapAddress;
+
+    public String getMapAddress2(){
+        return mapAddress2;
+    }
+
+    public void setMapAddress2( String mapAddress2 ){
+        this.mapAddress2 = mapAddress2;
+    }
+
+    /**
+     * 高德导航
+     */
+    @ColDefine(type = ColType.VARCHAR, width = 250)
+    protected String mapAddress2;
     @Column
     @ColDefine(type = ColType.VARCHAR, width = 100)
     protected String contact;
@@ -60,11 +74,11 @@ public class Enterprise extends BaseBean{
         this.orderId = orderId;
     }
 
-    @Column("yearnum")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
+    @Column("yearnum")
     @Readonly		// <- 这里声明了只读字段，即视图里增加的字段
     private int yearNum;
 
-    @Column("yearvalue")	// 其实可以不用声明数据库字段名 "taskcount"，因为多数数据库忽略大小写
+    @Column("yearvalue")
     @Readonly		// <- 这里声明了只读字段，即视图里增加的字段
     private double yearValue;
 

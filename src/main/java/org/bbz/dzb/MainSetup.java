@@ -181,6 +181,7 @@ public class MainSetup implements Setup{
 //        `enterprise`.`name` AS `name`,
 //        `enterprise`.`address` AS `address`,
 //        `enterprise`.`mapAddress` AS `mapAddress`,
+//        `enterprise`.`mapAddress2` AS `mapAddress2`,
 //        `enterprise`.`contact` AS `contact`,
 //        `enterprise`.`description` AS `description`,
 //        `enterprise`.`ct` AS `ct`,

@@ -132,6 +132,7 @@ public class EnterpriseModule extends BaseModule{
                 "\"description\": \"" + buildDesc(enterprise) + "\",\n" +
                 "\"category\": \"" + enterprise.getAreaType() + "\",\n" +
                 "\"link\": \"" + enterprise.getMapAddress() + "\",\n" +
+                "\"link2\": \"" + enterprise.getMapAddress2() + "\",\n" +
                 "\"pin\": \"red\",\n" +
                 action +
                 "\"x\": \"" + enterprise.getMapX() + "\",\n" +
